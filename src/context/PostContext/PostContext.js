@@ -15,6 +15,7 @@ function usePostContext() {
 
 function useProvidePostContext() {
   const [posts, setPosts] = useState(null);
+  const [postsCopy, setPostsCopy] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [comments, setComments] = useState(null);
   const [isLodaingComments, setIsLodaingComments] = useState(true);
@@ -30,6 +31,7 @@ function useProvidePostContext() {
     });
 
     setPosts(data);
+    setPostsCopy(data);
     setIsLoading(false);
   };
 
@@ -39,6 +41,21 @@ function useProvidePostContext() {
     setIsLodaingComments(false);
   };
 
+  const searchPostsByUserData = (search) => {
+    setIsLoading(true);
+
+    const data = postsCopy.filter((post) =>
+      post.user.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    if (data.length) {
+      setPosts(data);
+    } else {
+      setPosts([]);
+    }
+    setIsLoading(false);
+  };
+
   return {
     posts,
     comments,
@@ -46,6 +63,7 @@ function useProvidePostContext() {
     isLoading,
     getPostsList,
     getPostComments,
+    searchPostsByUserData,
   };
 }
 

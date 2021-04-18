@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Card = styled.div`
-  width: ${(props) => (props.comments ? "500px" : "300px")};
+  width: ${(props) => (props.comments ? "500px" : "270px")};
   height: ${(props) => (props.comments ? null : "350px")};
   display: flex;
   flex-direction: column;

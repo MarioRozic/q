@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation, useParams } from "react-router";
 import PostCard from "../../containers/PostCard";
-import { usePostContext } from "../../context/PostContext.js/PostContext";
+import { usePostContext } from "../../context/PostContext/PostContext";
 
 export default function PostDetails() {
   const { comments, isLodaingComments, getPostComments } = usePostContext();

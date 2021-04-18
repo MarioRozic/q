@@ -19,6 +19,7 @@ function useProvideUserContext() {
   useEffect(() => {
     const asyncFun = async () => {
       const data = await GetUserList();
+      console.log(data);
 
       setUserList(data);
       setIsLoading(false);

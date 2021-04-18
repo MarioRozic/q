@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 
 import { BrowserRouter as Router } from "react-router-dom";
 import { ProvideUserContext } from "./context/UsersContext/UsersContext";
-import { ProvidePostContext } from "./context/PostContext.js/PostContext";
+import { ProvidePostContext } from "./context/PostContext/PostContext";
 
 ReactDOM.render(
   <React.StrictMode>
