@@ -1,19 +1,32 @@
 import React, { useEffect } from "react";
+import { useHistory } from "react-router";
 import PostCard from "../../containers/PostCard";
 import { usePostContext } from "../../context/PostContext.js/PostContext";
 
 export default function PostsList() {
   const { posts, isLoading, getPostsList } = usePostContext();
+  const history = useHistory();
+
   useEffect(() => {
     getPostsList();
   }, []);
 
-  console.log(posts);
+  const onClickHandler = (post) => {
+    history.push({
+      pathname: `/post-details/${post.id}`,
+      state: { ...post },
+    });
+  };
+
   return (
-    <div>
+    <>
       {isLoading
         ? "Loading ..."
-        : posts?.map((post) => <PostCard key={post.id} post={post} />)}
-    </div>
+        : posts?.map((post) => (
+            <div key={post.id} onClick={() => onClickHandler(post)}>
+              <PostCard post={post} />
+            </div>
+          ))}
+    </>
   );
 }

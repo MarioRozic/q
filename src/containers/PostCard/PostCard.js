@@ -1,9 +1,19 @@
 import React from "react";
-import { AuthorTitle, Body, Card, CardImage, Title } from "./PostCard.style";
+import {
+  AuthorTitle,
+  Body,
+  Card,
+  CardImage,
+  CommentBody,
+  CommentBox,
+  Comments,
+  CommentTitle,
+  Title,
+} from "./PostCard.style";
 
-export default function PostCard({ post }) {
+export default function PostCard({ post, comments }) {
   return (
-    <Card>
+    <Card comments={comments}>
       <CardImage
         src="https://i.stack.imgur.com/y9DpT.jpg"
         alt="image placeholder"
@@ -11,6 +21,18 @@ export default function PostCard({ post }) {
       <AuthorTitle>{post.user.name}</AuthorTitle>
       <Title>{post.title}</Title>
       <Body>{post.body}</Body>
+      {comments?.length ? (
+        <>
+          <Comments>Comments:</Comments>
+
+          {comments.map((comment) => (
+            <CommentBox key={comment.id}>
+              <CommentTitle>{comment.email}</CommentTitle>
+              <CommentBody>{comment.body}</CommentBody>
+            </CommentBox>
+          ))}
+        </>
+      ) : null}
     </Card>
   );
 }

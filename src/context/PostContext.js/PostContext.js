@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { GetPostsList } from "../../API/posts";
+import { GetPostComments, GetPostsList } from "../../API/posts";
 import { useUserContext } from "../UsersContext/UsersContext";
 
 const postContext = createContext();
@@ -16,6 +16,8 @@ function usePostContext() {
 function useProvidePostContext() {
   const [posts, setPosts] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [comments, setComments] = useState(null);
+  const [isLodaingComments, setIsLodaingComments] = useState(true);
 
   const { userList } = useUserContext();
 
@@ -31,7 +33,20 @@ function useProvidePostContext() {
     setIsLoading(false);
   };
 
-  return { posts, isLoading, getPostsList };
+  const getPostComments = async (id) => {
+    const data = await GetPostComments(id);
+    setComments(data);
+    setIsLodaingComments(false);
+  };
+
+  return {
+    posts,
+    comments,
+    isLodaingComments,
+    isLoading,
+    getPostsList,
+    getPostComments,
+  };
 }
 
 export { ProvidePostContext, usePostContext };
