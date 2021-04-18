@@ -11,8 +11,7 @@ export default function PostsList() {
 
   const history = useHistory();
   const {
-    posts,
-    isLoading,
+    state: { posts, isLoading },
     getPostsList,
     searchPostsByUserData,
   } = usePostContext();

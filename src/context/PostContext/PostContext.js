@@ -1,5 +1,15 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useReducer, useState } from "react";
 import { GetPostComments, GetPostsList } from "../../API/posts";
+import {
+  GET_POSTS_LIST_FAIL,
+  GET_POSTS_LIST_START,
+  GET_POSTS_LIST_SUCCESS,
+  GET_POST_COMMENTS_FAIL,
+  GET_POST_COMMENTS_START,
+  GET_POST_COMMENTS_SUCCESS,
+  SET_POSTS_COPY,
+} from "../../store/actionTypes";
+import { initialState, reducer } from "../../store/reducer/postReducer";
 import { useUserContext } from "../UsersContext/UsersContext";
 
 const postContext = createContext();
@@ -14,53 +24,52 @@ function usePostContext() {
 }
 
 function useProvidePostContext() {
-  const [posts, setPosts] = useState(null);
-  const [postsCopy, setPostsCopy] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [comments, setComments] = useState(null);
-  const [isLodaingComments, setIsLodaingComments] = useState(true);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const { userList } = useUserContext();
 
   const getPostsList = async () => {
-    let data = await GetPostsList();
+    dispatch({ type: GET_POSTS_LIST_START });
+    try {
+      let data = await GetPostsList();
 
-    data = data.map((post) => {
-      let user = userList.filter((user) => user.id === post.userId)[0];
-      return { ...post, user: { ...user } };
-    });
+      data = data.map((post) => {
+        let user = userList.filter((user) => user.id === post.userId)[0];
+        return { ...post, user: { ...user } };
+      });
 
-    setPosts(data);
-    setPostsCopy(data);
-    setIsLoading(false);
+      dispatch({ type: GET_POSTS_LIST_SUCCESS, payload: data });
+      dispatch({ type: SET_POSTS_COPY, payload: data });
+    } catch (error) {
+      dispatch({ type: GET_POSTS_LIST_FAIL, payload: error });
+    }
   };
 
   const getPostComments = async (id) => {
-    const data = await GetPostComments(id);
-    setComments(data);
-    setIsLodaingComments(false);
+    dispatch({ type: GET_POST_COMMENTS_START });
+    try {
+      const data = await GetPostComments(id);
+      dispatch({ type: GET_POST_COMMENTS_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({ type: GET_POST_COMMENTS_FAIL, payload: error });
+    }
   };
 
   const searchPostsByUserData = (search) => {
-    setIsLoading(true);
-
-    const data = postsCopy.filter((post) =>
+    dispatch({ type: GET_POSTS_LIST_START });
+    const data = state.postsCopy.filter((post) =>
       post.user.name.toLowerCase().includes(search.toLowerCase())
     );
 
     if (data.length) {
-      setPosts(data);
+      dispatch({ type: GET_POSTS_LIST_SUCCESS, payload: data });
     } else {
-      setPosts([]);
+      dispatch({ type: GET_POSTS_LIST_SUCCESS, payload: [] });
     }
-    setIsLoading(false);
   };
 
   return {
-    posts,
-    comments,
-    isLodaingComments,
-    isLoading,
+    state,
     getPostsList,
     getPostComments,
     searchPostsByUserData,

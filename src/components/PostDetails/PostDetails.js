@@ -4,19 +4,22 @@ import PostCard from "../../containers/PostCard";
 import { usePostContext } from "../../context/PostContext/PostContext";
 
 export default function PostDetails() {
-  const { comments, isLodaingComments, getPostComments } = usePostContext();
+  const {
+    state: { isLoading, comments },
+    getPostComments,
+  } = usePostContext();
   const { id } = useParams();
-  const { state } = useLocation();
+  const { state: newState } = useLocation();
 
   useEffect(() => {
     getPostComments(id);
   }, []);
 
-  return isLodaingComments ? (
+  return isLoading ? (
     "Loading ..."
   ) : (
     <div>
-      <PostCard post={state} comments={comments} />
+      <PostCard post={newState} comments={comments} />
     </div>
   );
 }
