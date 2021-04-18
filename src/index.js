@@ -6,12 +6,15 @@ import reportWebVitals from "./reportWebVitals";
 
 import { BrowserRouter as Router } from "react-router-dom";
 import { ProvideUserContext } from "./context/UsersContext/UsersContext";
+import { ProvidePostContext } from "./context/PostContext.js/PostContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <ProvideUserContext>
-        <App />
+        <ProvidePostContext>
+          <App />
+        </ProvidePostContext>
       </ProvideUserContext>
     </Router>
   </React.StrictMode>,
