@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { useLocation, useParams } from "react-router";
+import Logger from "../../containers/Logger/Logger";
 import PostCard from "../../containers/PostCard";
 import { usePostContext } from "../../context/PostContext/PostContext";
 
-export default function PostDetails() {
+function PostDetails(props) {
   const {
     state: { isLoading, comments },
     getPostComments,
@@ -15,11 +16,11 @@ export default function PostDetails() {
     getPostComments(id);
   }, []);
 
-  return isLoading ? (
+  return isLoading || !comments ? (
     "Loading ..."
   ) : (
-    <div>
-      <PostCard post={newState} comments={comments} />
-    </div>
+    <PostCard post={newState} comments={comments} {...props} />
   );
 }
+
+export default Logger(PostDetails);

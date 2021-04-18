@@ -5,7 +5,6 @@ import {
   GET_POST_COMMENTS_FAIL,
   GET_POST_COMMENTS_START,
   GET_POST_COMMENTS_SUCCESS,
-  SET_POSTS_COPY,
 } from "../actionTypes";
 
 const initialState = {
@@ -18,20 +17,16 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case GET_POSTS_LIST_START:
-      return { ...state, isLoading: true };
+      return { ...state, isLoading: true, posts: null };
     case GET_POSTS_LIST_SUCCESS:
       return {
         ...state,
         isLoading: false,
         posts: [...action.payload],
+        postsCopy: action.setCopy ? [...action.payload] : [...state.postsCopy],
       };
     case GET_POSTS_LIST_FAIL:
       return { ...state, isLoading: false };
-    case SET_POSTS_COPY:
-      return {
-        ...state,
-        postsCopy: [...action.payload],
-      };
     case GET_POST_COMMENTS_START:
       return {
         ...state,

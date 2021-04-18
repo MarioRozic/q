@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router";
+import Logger from "../../containers/Logger/Logger";
 import PostCard from "../../containers/PostCard";
 import Search from "../../containers/Search";
 import { usePostContext } from "../../context/PostContext/PostContext";
 import useDebounce from "../../utils/useDebounce";
 
-export default function PostsList() {
+function PostsList(props) {
   const [search, setSearch] = useState("");
   const debouncedValue = useDebounce(search, 500);
 
@@ -17,12 +18,24 @@ export default function PostsList() {
   } = usePostContext();
 
   useEffect(() => {
-    getPostsList();
+    // stop calling api if posts exists (happens when comming back from details)
+    if (!posts) getPostsList();
   }, []);
 
   useEffect(() => {
-    if (posts) searchPostsByUserData(debouncedValue);
+    // call only when dont have any posts, and when search value is not empty
+    // to stop unnecessary renders
+    if (posts && debouncedValue !== "") searchPostsByUserData(debouncedValue);
   }, [debouncedValue]);
+
+  // render new cards only when posts list is updated
+  const renderPosts = useMemo(() => {
+    return posts?.map((post) => (
+      <div key={post.id} onClick={() => onClickHandler(post)}>
+        <PostCard post={post} {...props} />
+      </div>
+    ));
+  }, [posts]);
 
   const onClickHandler = (post) => {
     history.push({
@@ -34,13 +47,9 @@ export default function PostsList() {
   return (
     <>
       <Search placeholder="Search users" setSearch={setSearch} value={search} />
-      {isLoading
-        ? "Loading ..."
-        : posts?.map((post) => (
-            <div key={post.id} onClick={() => onClickHandler(post)}>
-              <PostCard post={post} />
-            </div>
-          ))}
+      {isLoading || !posts ? "Loading ..." : renderPosts}
     </>
   );
 }
+
+export default Logger(PostsList);

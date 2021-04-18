@@ -26,7 +26,6 @@ function useProvideUserContext() {
       try {
         dispatch({ type: GET_LIST_OF_ALL_USERS_START });
         const data = await GetUserList();
-        console.log(data);
         dispatch({ type: GET_LIST_OF_ALL_USERS_SUCCESS, payload: data });
       } catch (error) {
         dispatch({ type: GET_LIST_OF_ALL_USERS_FAIL, payload: error });

@@ -8,12 +8,14 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { ProvideUserContext } from "./context/UsersContext/UsersContext";
 import { ProvidePostContext } from "./context/PostContext/PostContext";
 
+const PROP_MSG = "Hello from";
+
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <ProvideUserContext>
         <ProvidePostContext>
-          <App />
+          <App propsmessage={PROP_MSG} />
         </ProvidePostContext>
       </ProvideUserContext>
     </Router>

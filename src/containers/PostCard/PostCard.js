@@ -1,4 +1,5 @@
 import React from "react";
+import Logger from "../Logger/Logger";
 import {
   AuthorTitle,
   Body,
@@ -11,7 +12,7 @@ import {
   Title,
 } from "./PostCard.style";
 
-export default function PostCard({ post, comments }) {
+function PostCard({ post, comments }) {
   return (
     <Card comments={comments}>
       <CardImage
@@ -36,3 +37,5 @@ export default function PostCard({ post, comments }) {
     </Card>
   );
 }
+
+export default Logger(PostCard);

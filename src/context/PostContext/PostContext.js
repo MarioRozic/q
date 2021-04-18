@@ -7,7 +7,6 @@ import {
   GET_POST_COMMENTS_FAIL,
   GET_POST_COMMENTS_START,
   GET_POST_COMMENTS_SUCCESS,
-  SET_POSTS_COPY,
 } from "../../store/actionTypes";
 import { initialState, reducer } from "../../store/reducer/postReducer";
 import { useUserContext } from "../UsersContext/UsersContext";
@@ -40,8 +39,7 @@ function useProvidePostContext() {
         return { ...post, user: { ...user } };
       });
 
-      dispatch({ type: GET_POSTS_LIST_SUCCESS, payload: data });
-      dispatch({ type: SET_POSTS_COPY, payload: data });
+      dispatch({ type: GET_POSTS_LIST_SUCCESS, payload: data, setCopy: true });
     } catch (error) {
       dispatch({ type: GET_POSTS_LIST_FAIL, payload: error });
     }
@@ -57,16 +55,19 @@ function useProvidePostContext() {
     }
   };
 
-  const searchPostsByUserData = (search) => {
+  const searchPostsByUserData = async (search) => {
     dispatch({ type: GET_POSTS_LIST_START });
     const data = state.postsCopy.filter((post) =>
       post.user.name.toLowerCase().includes(search.toLowerCase())
     );
 
+    // stall, simulate api call
+    await new Promise((resolve) => setTimeout(resolve, Math.random() * 1000));
+
     if (data.length) {
-      dispatch({ type: GET_POSTS_LIST_SUCCESS, payload: data });
+      dispatch({ type: GET_POSTS_LIST_SUCCESS, payload: data, setCopy: false });
     } else {
-      dispatch({ type: GET_POSTS_LIST_SUCCESS, payload: [] });
+      dispatch({ type: GET_POSTS_LIST_SUCCESS, payload: [], setCopy: false });
     }
   };
 

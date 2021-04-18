@@ -1,9 +1,10 @@
 import { Switch, Route, Redirect } from "react-router";
 import PostDetails from "./components/PostDetails";
 import PostsList from "./components/PostsList";
+import Logger from "./containers/Logger/Logger";
 import { useUserContext } from "./context/UsersContext/UsersContext";
 
-function App() {
+function App(props) {
   const {
     state: { isLoading, userList },
   } = useUserContext();
@@ -12,14 +13,14 @@ function App() {
   ) : (
     <Switch>
       <Route path="/posts">
-        <PostsList />
+        <PostsList {...props} />
       </Route>
       <Route path="/post-details/:id">
-        <PostDetails />
+        <PostDetails {...props} />
       </Route>
       <Redirect from="/" to="/posts" />
     </Switch>
   );
 }
 
-export default App;
+export default Logger(App);
