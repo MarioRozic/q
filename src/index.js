@@ -5,11 +5,14 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 import { BrowserRouter as Router } from "react-router-dom";
+import { ProvideUserContext } from "./context/UsersContext/UsersContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <App />
+      <ProvideUserContext>
+        <App />
+      </ProvideUserContext>
     </Router>
   </React.StrictMode>,
   document.getElementById("root")
