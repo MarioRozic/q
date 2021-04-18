@@ -4,7 +4,9 @@ import PostsList from "./components/PostsList";
 import { useUserContext } from "./context/UsersContext/UsersContext";
 
 function App() {
-  const { isLoading, userList } = useUserContext();
+  const {
+    state: { isLoading, userList },
+  } = useUserContext();
   return isLoading || !userList ? (
     "Loading ..."
   ) : (

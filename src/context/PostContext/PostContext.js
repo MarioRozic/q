@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useState } from "react";
+import { createContext, useContext, useReducer } from "react";
 import { GetPostComments, GetPostsList } from "../../API/posts";
 import {
   GET_POSTS_LIST_FAIL,
@@ -26,7 +26,9 @@ function usePostContext() {
 function useProvidePostContext() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const { userList } = useUserContext();
+  const {
+    state: { userList },
+  } = useUserContext();
 
   const getPostsList = async () => {
     dispatch({ type: GET_POSTS_LIST_START });

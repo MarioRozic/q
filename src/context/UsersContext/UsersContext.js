@@ -1,5 +1,11 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import { GetUserList } from "../../API/user";
+import {
+  GET_LIST_OF_ALL_USERS_FAIL,
+  GET_LIST_OF_ALL_USERS_START,
+  GET_LIST_OF_ALL_USERS_SUCCESS,
+} from "../../store/actionTypes";
+import { initialState, reducer } from "../../store/reducer/userReducer";
 
 const userContext = createContext();
 
@@ -13,22 +19,24 @@ function useUserContext() {
 }
 
 function useProvideUserContext() {
-  const [userList, setUserList] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     const asyncFun = async () => {
-      const data = await GetUserList();
-      console.log(data);
-
-      setUserList(data);
-      setIsLoading(false);
+      try {
+        dispatch({ type: GET_LIST_OF_ALL_USERS_START });
+        const data = await GetUserList();
+        console.log(data);
+        dispatch({ type: GET_LIST_OF_ALL_USERS_SUCCESS, payload: data });
+      } catch (error) {
+        dispatch({ type: GET_LIST_OF_ALL_USERS_FAIL, payload: error });
+      }
     };
 
     asyncFun();
   }, []);
 
-  return { userList, isLoading };
+  return { state };
 }
 
 export { ProvideUserContext, useUserContext };
