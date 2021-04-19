@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import { useLocation, useParams } from "react-router";
 import Logger from "../../containers/Logger/Logger";
 import PostCard from "../../containers/PostCard";
@@ -25,5 +26,9 @@ function PostDetails(props) {
     <PostCard post={newState} comments={comments} {...props} />
   );
 }
+
+PostDetails.propTypes = {
+  propsmessage: PropTypes.string.isRequired,
+};
 
 export default Logger(PostDetails);

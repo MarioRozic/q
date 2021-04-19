@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Logger from "../Logger/Logger";
 import {
   AuthorTitle,
@@ -37,5 +38,11 @@ function PostCard({ post, comments }) {
     </Card>
   );
 }
+
+PostCard.propTypes = {
+  propsmessage: PropTypes.string.isRequired,
+  post: PropTypes.object.isRequired,
+  comments: PropTypes.array,
+};
 
 export default Logger(PostCard);

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
+import PropTypes from "prop-types";
 import { useHistory } from "react-router";
 import Logger from "../../containers/Logger/Logger";
 import PostCard from "../../containers/PostCard";
@@ -59,6 +60,10 @@ const PostsList = (props) => {
       {isLoading || !posts ? "Loading ..." : renderPosts}
     </>
   );
+};
+
+PostsList.propTypes = {
+  propsmessage: PropTypes.string.isRequired,
 };
 
 export default Logger(PostsList);

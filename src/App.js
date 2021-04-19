@@ -1,4 +1,5 @@
 import { Switch, Route, Redirect } from "react-router";
+import PropTypes from "prop-types";
 import PostDetails from "./components/PostDetails";
 import PostsList from "./components/PostsList";
 import Logger from "./containers/Logger/Logger";
@@ -22,5 +23,9 @@ function App(props) {
     </Switch>
   );
 }
+
+App.propTypes = {
+  propsmessage: PropTypes.string.isRequired,
+};
 
 export default Logger(App);
