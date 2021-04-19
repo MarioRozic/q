@@ -3,6 +3,7 @@ import { useLocation, useParams } from "react-router";
 import Logger from "../../containers/Logger/Logger";
 import PostCard from "../../containers/PostCard";
 import { usePostContext } from "../../context/PostContext/PostContext";
+import { useIsMount } from "../../utils/useIsMount";
 
 function PostDetails(props) {
   const {
@@ -12,9 +13,11 @@ function PostDetails(props) {
   const { id } = useParams();
   const { state: newState } = useLocation();
 
+  const isMounted = useIsMount();
+
   useEffect(() => {
-    getPostComments(id);
-  }, []);
+    if (isMounted) getPostComments(id);
+  }, [getPostComments, id, isMounted]);
 
   return isLoading || !comments ? (
     "Loading ..."

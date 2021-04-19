@@ -1,12 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { useHistory } from "react-router";
 import Logger from "../../containers/Logger/Logger";
 import PostCard from "../../containers/PostCard";
 import Search from "../../containers/Search";
 import { usePostContext } from "../../context/PostContext/PostContext";
 import useDebounce from "../../utils/useDebounce";
+import { useIsMount } from "../../utils/useIsMount";
 
-function PostsList(props) {
+const PostsList = (props) => {
   const [search, setSearch] = useState("");
   const debouncedValue = useDebounce(search, 500);
 
@@ -17,16 +18,31 @@ function PostsList(props) {
     searchPostsByUserData,
   } = usePostContext();
 
-  useEffect(() => {
-    // stop calling api if posts exists (happens when comming back from details)
-    if (!posts) getPostsList();
-  }, []);
+  const isMounted = useIsMount();
 
   useEffect(() => {
-    // call only when dont have any posts, and when search value is not empty
-    // to stop unnecessary renders
-    if (posts && debouncedValue !== "") searchPostsByUserData(debouncedValue);
+    // stop calling api if posts exists (happens when comming back from details)
+    // call it only on first mount
+    if (!posts && isMounted) getPostsList();
+  }, [getPostsList, isMounted, posts]);
+
+  useEffect(() => {
+    // skip calling search on first render
+    // to prevent unnecessary renders
+    if (!isMounted) searchPostsByUserData(debouncedValue);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
+
+  const onClickHandler = useCallback(
+    (post) => {
+      history.push({
+        pathname: `/post-details/${post.id}`,
+        state: { ...post },
+      });
+    },
+    [history]
+  );
 
   // render new cards only when posts list is updated
   const renderPosts = useMemo(() => {
@@ -35,14 +51,7 @@ function PostsList(props) {
         <PostCard post={post} {...props} />
       </div>
     ));
-  }, [posts]);
-
-  const onClickHandler = (post) => {
-    history.push({
-      pathname: `/post-details/${post.id}`,
-      state: { ...post },
-    });
-  };
+  }, [posts, onClickHandler, props]);
 
   return (
     <>
@@ -50,6 +59,6 @@ function PostsList(props) {
       {isLoading || !posts ? "Loading ..." : renderPosts}
     </>
   );
-}
+};
 
 export default Logger(PostsList);
