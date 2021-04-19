@@ -54,9 +54,20 @@ const PostsList = (props) => {
     ));
   }, [posts, onClickHandler, props]);
 
+  const renderSearch = useMemo(() => {
+    return (
+      <Search
+        placeholder="Search users"
+        setSearch={setSearch}
+        value={search}
+        {...props}
+      />
+    );
+  }, [search, props]);
+
   return (
     <>
-      <Search placeholder="Search users" setSearch={setSearch} value={search} />
+      {renderSearch}
       {isLoading || !posts ? "Loading ..." : renderPosts}
     </>
   );

@@ -1,7 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { SearchContainer, Search as SearchInput } from "./Search.style";
+import Logger from "../Logger/Logger";
 
-export default function Search({ placeholder, setSearch, value }) {
+function Search({ placeholder, setSearch, value, ...rest }) {
   return (
     <SearchContainer>
       <SearchInput
@@ -12,3 +14,9 @@ export default function Search({ placeholder, setSearch, value }) {
     </SearchContainer>
   );
 }
+
+Search.propTypes = {
+  propsmessage: PropTypes.string.isRequired,
+};
+
+export default Logger(Search);
