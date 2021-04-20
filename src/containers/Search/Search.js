@@ -7,9 +7,11 @@ function Search({ placeholder, setSearch, value, ...rest }) {
   return (
     <SearchContainer>
       <SearchInput
+        aria-label="search-input"
         placeholder={placeholder}
         onChange={(e) => setSearch(e.target.value)}
         value={value}
+        type="text"
       />
     </SearchContainer>
   );

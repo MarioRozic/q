@@ -15,7 +15,7 @@ import {
 
 function PostCard({ post, comments }) {
   return (
-    <Card comments={comments}>
+    <Card comments={comments} aria-label="post">
       <CardImage
         src="https://i.stack.imgur.com/y9DpT.jpg"
         alt="image placeholder"
@@ -28,7 +28,7 @@ function PostCard({ post, comments }) {
           <Comments>Comments:</Comments>
 
           {comments.map((comment) => (
-            <CommentBox key={comment.id}>
+            <CommentBox key={comment.id} aria-label="comment">
               <CommentTitle>{comment.email}</CommentTitle>
               <CommentBody>{comment.body}</CommentBody>
             </CommentBox>

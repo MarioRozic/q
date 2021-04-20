@@ -79,4 +79,4 @@ function useProvidePostContext() {
   };
 }
 
-export { ProvidePostContext, usePostContext };
+export { ProvidePostContext, usePostContext, postContext };
