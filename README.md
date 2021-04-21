@@ -12,4 +12,4 @@
 ### Run tests
 
 1.  To run tests simply run
-    `npm start` or `npm run start`
+    `npm test` or `npm run test`
